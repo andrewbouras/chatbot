@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Your Data</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #2c3e50;
+            padding: 15px 0;
+            text-align: center;
+        }
+        .nav-button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .nav-button:hover {
+            background-color: #34495e;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            font-size: 28px;
+        }
+        .input-group {
+            margin-bottom: 25px;
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        .form-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .form-button:hover {
+            background-color: #2980b9;
+        }
+        .instructions-button {
+            padding: 8px 15px;
+            background-color: #95a5a6;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .instructions-button:hover {
+            background-color: #7f8c8d;
+        }
+        .success-message {
+            display: inline-block;
+            margin-top: 15px;
+            color: #27ae60;
+            font-size: 22px;
+        }
+        .table-container {
+            margin-top: 30px;
+            overflow-x: auto;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .data-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border-radius: 15px;
+            z-index: 1000;
+            max-width: 95%;
+            width: 900px;
+        }
+        .popup-content {
+            position: relative;
+            padding: 20px;
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #7f8c8d;
+            transition: color 0.3s;
+        }
+        .close-button:hover {
+            color: #2c3e50;
+        }
+        .instructions-flex {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .instructions-text {
+            width: 100%;
+            padding-right: 0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .instructions-image {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .instruction-gif {
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .file-input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        .file-input-group input[type="file"] {
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <button class="nav-button" onclick="location.href='https://vexaresearch.com/vexa/'">Home</button>
+        <button class="nav-button" onclick="location.href='https://vexaresearch.com/stat/'">Dashboard</button>
+        <button class="nav-button" onclick="location.href='https://vexaresearch.com/logout/?redirect_to=https://vexaresearch.com/login/'">Log out</button>
+    </nav>
+    <div class="form-container">
+        <h2>Submit Your Data</h2>
+        <button id="instructions-button" class="instructions-button">Instructions for Manual Upload</button>
+        <div id="instructions-popup" class="popup">
+            <div class="popup-content">
+                <span class="close-button">&times;</span>
+                <div class="instructions-flex">
+                    <div class="instructions-text">
+                        <p>Most EMRs allow for exporting lists of patients into an Excel or Google Sheets page. All you need to do is to simply copy the list of names and numbers and input them below.</p>
+                    </div>
+                    <div class="instructions-image">
+                        <img src="https://i.imgur.com/tIh65nU.gif" alt="Instructions GIF" class="instruction-gif">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="file-input-group">
+            <input type="file" id="csv-file" accept=".csv" class="form-input">
+            <button id="import-csv" class="instructions-button">Import CSV</button>
+        </div>
+        <div class="input-group">
+            <textarea id="names" class="form-input" placeholder="Enter names here, one per line (ex. First Name Last Name)" rows="5"></textarea>
+        </div>
+        <div class="input-group">
+            <textarea id="phone-numbers" class="form-input" placeholder="Enter phone numbers here, one per line (ex. 555-555-5555)" rows="5"></textarea>
+        </div>
+        <div class="input-group">
+            <label for="study">Study:</label>
+            <select id="study" class="form-input">
+                <option value="Altus">Altus</option>
+                <option value="Freenome">Freenome</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <button id="submit" class="form-button">Submit</button>
+            <span id="success-message" class="success-message" style="display:none;">✔ Data submitted successfully</span>
+        </div>
+        <div class="table-container">
+            <table id="data-table" class="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone Number</th>
+                        <th>Study</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+    document.getElementById('instructions-button').addEventListener('click', function() {
+        document.getElementById('instructions-popup').style.display = 'block';
+    });
+
+    document.querySelector('.close-button').addEventListener('click', function() {
+        document.getElementById('instructions-popup').style.display = 'none';
+    });
+
+    document.getElementById('import-csv').addEventListener('click', function() {
+        const fileInput = document.getElementById('csv-file');
+        const file = fileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+                const lines = content.split('\n');
+                const names = [];
+                const phoneNumbers = [];
+                let isFirstLine = true;
+                lines.forEach(line => {
+                    if (isFirstLine) {
+                        isFirstLine = false;
+                        return; // Skip the header line
+                    }
+                    if (line.trim() !== '') {
+                        const [name, phoneNumber] = line.split(',');
+                        if (name && phoneNumber) {
+                            names.push(name.trim());
+                            phoneNumbers.push(phoneNumber.trim());
+                        }
+                    }
+                });
+                
+                document.getElementById('names').value = names.join('\n');
+                document.getElementById('phone-numbers').value = phoneNumbers.join('\n');
+                
+                // Automatically trigger the submit process after import
+                document.getElementById('submit').click();
+            };
+            reader.readAsText(file);
+        } else {
+            alert('Please select a CSV file to import.');
+        }
+    });
+
+    document.getElementById('submit').addEventListener('click', function() {
+        const names = document.getElementById('names').value.split('\n').map(name => name.trim()).filter(name => name);
+        const phoneNumbers = document.getElementById('phone-numbers').value.split('\n').map(phone => phone.trim().replace(/-/g, '')).filter(phone => phone);
+        const study = document.getElementById('study').value;
+
+        if (names.length !== phoneNumbers.length) {
+            alert('The number of names and phone numbers do not match. Please check your input.');
+            return;
+        }
+
+        const duplicates = findDuplicates(phoneNumbers);
+        if (duplicates.length > 0) {
+            alert('Duplicate phone numbers found: ' + duplicates.join(', ') + '\nPlease remove duplicates before submitting.');
+            return;
+        }
+
+        const entries = names.map((name, index) => ({ name, phone: phoneNumbers[index] }));
+        submitEntries(entries, study);
+    });
+
+    function findDuplicates(phoneNumbers) {
+        const seen = new Set();
+        const duplicates = new Set();
+        for (const phone of phoneNumbers) {
+            if (seen.has(phone)) {
+                duplicates.add(phone);
+            } else {
+                seen.add(phone);
+            }
+        }
+        return Array.from(duplicates);
+    }
+
+    function submitEntries(entries, study) {
+        const tbody = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+        tbody.innerHTML = ''; // Clear existing rows
+
+        entries.forEach(entry => {
+            const row = tbody.insertRow();
+            const nameCell = row.insertCell(0);
+            const phoneCell = row.insertCell(1);
+            const studyCell = row.insertCell(2);
+            nameCell.textContent = entry.name;
+            phoneCell.textContent = entry.phone;
+            studyCell.textContent = study;
+
+            const payload = {
+                context: {
+                    id: generateUniqueId(),
+                    ts: new Date().toISOString(),
+                    pipeline_id: null,
+                    workflow_id: "p_V9CvWQj",
+                    deployment_id: "d_v7sA97KR",
+                    source_type: "TRACE",
+                    verified: false,
+                    hops: null,
+                    test: true,
+                    replay: false,
+                    owner_id: "o_9WImJ0a",
+                    platform_version: "3.48.3",
+                    workflow_name: "[1] Website form, SMS, Datastore",
+                    resume: null,
+                    emitter_id: "hi_kvHMvRO",
+                    trace_id: generateUniqueId()
+                },
+                event: {
+                    body: [{...entry, study}],
+                    client_ip: "82.197.80.155",
+                    headers: {
+                        accept: "*/*",
+                        "accept-encoding": "deflate, gzip",
+                        "content-length": JSON.stringify([{...entry, study}]).length.toString(),
+                        "content-type": "application/json",
+                        host: "eo6pc1ujxl62zkw.m.pipedream.net",
+                        "user-agent": "WordPress/6.5.3; https://home.scheduleclinic.com"
+                    },
+                    method: "POST",
+                    path: "/",
+                    query: {},
+                    url: "https://eo6pc1ujxl62zkw.m.pipedream.net/"
+                }
+            };
+
+            fetch('https://eo6pc1ujxl62zkw.m.pipedream.net', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => console.log('Success:', data))
+            .catch(error => console.error('Error:', error));
+        });
+
+        document.getElementById('success-message').style.display = 'inline';
+        document.getElementById('names').value = '';
+        document.getElementById('phone-numbers').value = '';
+    }
+
+    function generateUniqueId() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+    </script>
+</body>
+</html>
